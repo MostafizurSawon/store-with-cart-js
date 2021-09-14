@@ -27,7 +27,7 @@ const showProducts = (products) => {
       <h6>Price: $${price}</h6>
       <i class="bi bi-star-fill pt-5"></i> ${product.rating.rate} (${product.rating.count})</p>
       
-      <button onclick="addToCart(${product.id},${product.price}), updateTotal()" id="addToCart-btn" class="buy-now btn btn-success mt-3">Add to Cart</button>
+      <button onclick="addToCart(${product.id},${price}), updateTotal()" id="addToCart-btn" class="buy-now btn btn-success mt-3">Add to Cart</button>
       <button id="details-btn" class="btn btn-info mt-3">Details</button>     
       </div>
       `;
@@ -46,7 +46,7 @@ const addToCart = (id, price) => {
 
 const getInputValue = (id) => {
   const element = document.getElementById(id).innerText;
-  const converted = parseInt(element);
+  const converted = parseFloat(element);
   return converted;
 };
 
@@ -84,6 +84,7 @@ const updateTaxAndCharge = () => {
 const updateTotal = () => {
   const grandTotal =
     getInputValue("price") + getInputValue("delivery-charge") + getInputValue("total-tax");
+    // console.log(getInputValue("price"));
   document.getElementById("total").innerText = grandTotal.toFixed(2);
 };
 updateTotal();

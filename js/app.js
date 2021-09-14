@@ -9,22 +9,32 @@ const loadProducts = () => {
 const showProducts = (products) => {
   const allProducts = products.map((pd) => pd);
   for (const product of allProducts) {
-    const image = product.images;
+    const image = product.image;
+    let rawTitle = product.title;
+    const title = rawTitle.substr(0, 45);
+    const category = product.category;
+    const price = product.price;
+
     const div = document.createElement("div");
     div.classList.add("product");
-    div.innerHTML = `<div class="single-product">
-      <div>
+    div.innerHTML = `<div class="single-product m-4 my-3" >
+      <div class="">
     <img class="product-image" src=${image}></img>
       </div>
-      <h3>${product.title}</h3>
-      <p>Category: ${product.category}</p>
-      <h2>Price: $ ${product.price}</h2>
-      <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
-      <button id="details-btn" class="btn btn-danger">Details</button></div>
+      <div class="title-height mt-3"><h5>${title}</h5></div>
+      
+      <p>Category: ${category}</p>
+      <h6>Price: $${price}</h6>
+      <i class="bi bi-star-fill pt-5"></i> ${product.rating.rate} (${product.rating.count})</p>
+      
+      <button onclick="addToCart(${product.id},${product.price}), updateTotal()" id="addToCart-btn" class="buy-now btn btn-success mt-3">Add to Cart</button>
+      <button id="details-btn" class="btn btn-info mt-3">Details</button>     
+      </div>
       `;
     document.getElementById("all-products").appendChild(div);
   }
 };
+
 let count = 0;
 const addToCart = (id, price) => {
   count = count + 1;
@@ -43,14 +53,14 @@ const getInputValue = (id) => {
 // main price update function
 const updatePrice = (id, value) => {
   const convertedOldPrice = getInputValue(id);
-  const convertPrice = parseFloat(value);
-  const total = convertedOldPrice + convertPrice;
-  document.getElementById(id).innerText = Math.round(total);
+  const convertPrice = value;
+  const total =  convertedOldPrice + convertPrice;
+  document.getElementById(id).innerText = total.toFixed(2);
 };
 
 // set innerText function
 const setInnerText = (id, value) => {
-  document.getElementById(id).innerText = Math.round(value);
+  document.getElementById(id).innerText = value.toFixed(2);
 };
 
 // update delivery charge and total Tax
@@ -73,8 +83,9 @@ const updateTaxAndCharge = () => {
 //grandTotal update function
 const updateTotal = () => {
   const grandTotal =
-    getInputValue("price") + getInputValue("delivery-charge") +
-    getInputValue("total-tax");
-  document.getElementById("total").innerText = grandTotal;
+    getInputValue("price") + getInputValue("delivery-charge") + getInputValue("total-tax");
+  document.getElementById("total").innerText = grandTotal.toFixed(2);
 };
+updateTotal();
+
 loadProducts();
